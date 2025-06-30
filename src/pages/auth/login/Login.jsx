@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import useAuth from "../../../hooks/useAuth";
 import { toast } from "react-toastify";
 import SocialLogin from "../../../components/socialLogin/SocialLogin";
@@ -7,12 +7,16 @@ import SocialLogin from "../../../components/socialLogin/SocialLogin";
 const Login = () => {
   const { signIn } = useAuth();
   const { register, handleSubmit } = useForm();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state?.from || "/";
 
   const onSubmit = (data) => {
     console.log(data);
     signIn(data.email, data.password)
       .then((result) => {
         console.log(result);
+        navigate(from);
       })
       .catch((error) => {
         toast.error(error);
